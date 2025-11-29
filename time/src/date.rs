@@ -13,6 +13,8 @@ use deranged::RangedI32;
 use num_conv::prelude::*;
 use powerfmt::ext::FormatterExt;
 use powerfmt::smart_display::{self, FormatterOptions, Metadata, SmartDisplay};
+#[cfg(feature = "rkyv")]
+use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 
 use crate::convert::*;
 use crate::ext::DigitCount;
@@ -47,6 +49,7 @@ pub(crate) const MAX_YEAR: i32 = if cfg!(feature = "large-dates") {
 /// inclusive by enabling the `large-dates` crate feature. Doing so has performance implications
 /// and introduces some ambiguities when parsing.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[cfg_attr(feature = "rkyv", derive(Archive, RkyvDeserialize, RkyvSerialize))]
 pub struct Date {
     /// Bitpacked field containing the year, ordinal, and whether the year is a leap year.
     // |     x      | xxxxxxxxxxxxxxxxxxxxx |       x       | xxxxxxxxx |

@@ -43,6 +43,7 @@ rand08 = ["dep:rand08", "deranged/rand08"]
 rand09 = ["dep:rand09", "deranged/rand09"]
 serde = ["dep:serde_core", "time-macros?/serde", "deranged/serde"]
 serde-human-readable = ["serde", "formatting", "parsing"]
+rkyv = ["dep:rkyv"]
 # Deprecated in favor of using the relevant flags directly.
 serde-well-known = ["serde", "formatting", "parsing"]
 std = ["alloc"]
@@ -61,6 +62,7 @@ rand09 = { workspace = true, optional = true }
 serde_core = { workspace = true, optional = true }
 time-core.workspace = true
 time-macros = { workspace = true, optional = true }
+rkyv = { workspace = true, optional = true }
 
 [target.'cfg(target_family = "unix")'.dependencies]
 libc = { workspace = true, optional = true }

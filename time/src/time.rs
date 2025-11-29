@@ -14,6 +14,8 @@ use deranged::{RangedU32, RangedU8};
 use num_conv::prelude::*;
 use powerfmt::ext::FormatterExt;
 use powerfmt::smart_display::{self, FormatterOptions, Metadata, SmartDisplay};
+#[cfg(feature = "rkyv")]
+use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 
 use crate::convert::*;
 #[cfg(feature = "formatting")]
@@ -28,6 +30,7 @@ use crate::{error, Duration};
 /// perform niche value optimization.
 #[repr(u8)]
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[cfg_attr(feature = "rkyv", derive(Archive, RkyvDeserialize, RkyvSerialize))]
 pub(crate) enum Padding {
     #[allow(clippy::missing_docs_in_private_items)]
     Optimize,
@@ -49,6 +52,7 @@ type Nanoseconds = RangedU32<0, { Nanosecond::per_t::<u32>(Second) - 1 }>;
 ///
 /// When comparing two `Time`s, they are assumed to be in the same calendar date.
 #[derive(Clone, Copy, Eq)]
+#[cfg_attr(feature = "rkyv", derive(Archive, RkyvDeserialize, RkyvSerialize))]
 #[cfg_attr(not(docsrs), repr(C))]
 pub struct Time {
     // The order of this struct's fields matter! Do not reorder them.

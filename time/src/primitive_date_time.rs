@@ -12,6 +12,8 @@ use std::io;
 
 use powerfmt::ext::FormatterExt as _;
 use powerfmt::smart_display::{self, FormatterOptions, Metadata, SmartDisplay};
+#[cfg(feature = "rkyv")]
+use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 
 #[cfg(feature = "formatting")]
 use crate::formatting::Formattable;
@@ -24,6 +26,7 @@ use crate::{
 
 /// Combined date and time.
 #[derive(Clone, Copy, Eq)]
+#[cfg_attr(feature = "rkyv", derive(Archive, RkyvDeserialize, RkyvSerialize))]
 #[cfg_attr(not(docsrs), repr(C))]
 pub struct PrimitiveDateTime {
     // The order of this struct's fields matter! Do not reorder them.
